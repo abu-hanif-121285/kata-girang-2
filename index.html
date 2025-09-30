@@ -1,0 +1,2830 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kata Girang - Kali Tambah Bagi Kurang</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --card-bg: #ffffff;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--info));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 60vh;
+            position: relative;
+        }
+
+        .level-select {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .level-select h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .level-select h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--info));
+            border-radius: 3px;
+        }
+
+        .level-buttons {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .level-btn {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--info));
+            color: white;
+            border: none;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .level-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: -1;
+        }
+
+        .level-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .level-btn:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .level-btn span {
+            display: block;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .player-select {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .player-select h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .player-select h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--info));
+            border-radius: 3px;
+        }
+
+        .player-buttons {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .player-btn {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--info));
+            color: white;
+            border: none;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .player-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: -1;
+        }
+
+        .player-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .player-btn:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .player-btn span {
+            display: block;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .game-container {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--light), #e9ecef);
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .info-item {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .result-target {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--danger);
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-target::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--danger), var(--warning));
+        }
+
+        .game-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .cards-container, .operations-container {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .cards-title, .operations-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .cards-title::after, .operations-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--info));
+            border-radius: 3px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            aspect-ratio: 2/3;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(74, 111, 165, 0.1) 0%, rgba(74, 111, 165, 0) 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card.selected {
+            background: linear-gradient(135deg, var(--primary), var(--info));
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(74, 111, 165, 0.3);
+        }
+
+        .card.used {
+            background-color: #e9ecef;
+            color: var(--secondary);
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+        }
+
+        .operations {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .operation {
+            aspect-ratio: 1/1;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .operation:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .operation.selected {
+            background: linear-gradient(135deg, var(--success), #20c997);
+            color: white;
+            border-color: var(--success);
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+        }
+
+        .operation.disabled {
+            background-color: #e9ecef;
+            color: var(--secondary);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--success), #20c997);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--warning), #e0a800);
+            color: var(--dark);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, var(--danger), #c82333);
+            color: white;
+        }
+
+        .btn-restart:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-share {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+        }
+
+        .btn-share:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: white;
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-retry {
+            background: linear-gradient(135deg, var(--info), #138496);
+            color: white;
+        }
+
+        .btn-retry:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(23, 162, 184, 0.3);
+        }
+
+        .players-status {
+            margin-top: 30px;
+        }
+
+        .players-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .players-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--info));
+            border-radius: 3px;
+        }
+
+        .players-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .player-status {
+            padding: 20px;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            width: 220px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .player-status:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .player-status.active {
+            background: linear-gradient(135deg, #e7f5ff, #cfe2ff);
+            border: 2px solid var(--primary);
+        }
+
+        .player-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .player-info {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .master-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warning), #e0a800);
+            color: var(--dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+        }
+
+        .expression-display {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 25px 50px;
+            border-radius: 15px;
+            font-size: 2rem;
+            font-weight: bold;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: messagePopup 0.5s;
+        }
+
+        @keyframes messagePopup {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .game-over {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s;
+        }
+
+        .game-over-content {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-over-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--info), var(--success), var(--warning), var(--danger));
+        }
+
+        .game-over-title {
+            font-size: 3rem;
+            color: var(--danger);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-over-message {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .winners-list {
+            margin-bottom: 30px;
+        }
+
+        .winner-item {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .share-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .share-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background-color: #3a5a8c;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--warning);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: particleAnimation 1s ease-out forwards;
+        }
+
+        @keyframes particleAnimation {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .start-content {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--primary), var(--info));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(74, 111, 165, 0.3);
+        }
+
+        .level-info {
+            background-color: #e7f5ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .level-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .level-info p {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .close {
+            color: var(--secondary);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close:hover {
+            color: var(--danger);
+        }
+
+        .player-inputs {
+            margin-bottom: 20px;
+        }
+
+        .player-input {
+            margin-bottom: 15px;
+        }
+
+        .player-input label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .player-input input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .player-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-cancel {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-confirm {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background-color: #3a5a8c;
+        }
+
+        .waiting-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+            text-align: center;
+        }
+
+        .waiting-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .waiting-message {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 30px;
+        }
+
+        .player-list-waiting {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            width: 80%;
+            max-width: 500px;
+            margin-bottom: 30px;
+        }
+
+        .player-item-waiting {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .player-name-waiting {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .player-status-waiting {
+            margin-left: auto;
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        .timer {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .start-game-btn {
+            background: linear-gradient(135deg, var(--success), #20c997);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .start-game-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            border-left: 5px solid var(--success);
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            animation: slideInRight 0.5s, fadeOut 0.5s 2.5s;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .join-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+            text-align: center;
+        }
+
+        .join-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .join-message {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 30px;
+        }
+
+        .join-input {
+            width: 80%;
+            max-width: 400px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .join-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+
+        .join-btn {
+            background: linear-gradient(135deg, var(--primary), var(--info));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .join-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(74, 111, 165, 0.3);
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .timeout-message {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeout-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .player-buttons, .level-buttons {
+                gap: 15px;
+            }
+            
+            .player-btn, .level-btn {
+                width: 120px;
+                height: 120px;
+                font-size: 1.5rem;
+            }
+            
+            .game-area {
+                flex-direction: column;
+            }
+            
+            .cards, .operations {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="start-screen" id="startScreen">
+        <div class="start-content">
+            <div class="start-title">Kata Girang</div>
+            <div class="subtitle">Kali Tambah Bagi Kurang</div>
+            <p style="margin: 20px 0; font-size: 1.1rem;">Siap untuk memulai permainan matematika yang seru?</p>
+            <button class="start-btn" id="startBtn">Mulai Permainan</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Kata Girang</h1>
+            <div class="subtitle">Kali Tambah Bagi Kurang</div>
+        </header>
+
+        <div class="menu-container" id="menuContainer">
+            <!-- Level Selection -->
+            <div class="level-select" id="levelSelect">
+                <h2>Pilih Level Permainan</h2>
+                <div class="level-buttons">
+                    <button class="level-btn" onclick="selectLevel(1)">
+                        1
+                        <span>Dasar</span>
+                    </button>
+                    <button class="level-btn" onclick="selectLevel(2)">
+                        2
+                        <span>Menengah</span>
+                    </button>
+                    <button class="level-btn" onclick="selectLevel(3)">
+                        3
+                        <span>Lanjutan</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Player Selection (hidden initially) -->
+            <div class="player-select" id="playerSelect" style="display: none;">
+                <h2>Pilih Jumlah Pemain</h2>
+                <div class="player-buttons">
+                    <button class="player-btn" onclick="showPlayerNamesModal(1)">
+                        1
+                        <span>Single Player</span>
+                    </button>
+                    <button class="player-btn" onclick="showPlayerNamesModal(2)">
+                        2
+                        <span>Dua Pemain</span>
+                    </button>
+                    <button class="player-btn" onclick="showPlayerNamesModal(3)">
+                        3
+                        <span>Tiga Pemain</span>
+                    </button>
+                    <button class="player-btn" onclick="showPlayerNamesModal(4)">
+                        4
+                        <span>Empat Pemain</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="join-screen" id="joinScreen">
+            <div class="join-title">Bergabung ke Permainan</div>
+            <div class="join-message">Masukkan kode permainan yang Anda terima:</div>
+            <input type="text" class="join-input" id="joinCodeInput" placeholder="Masukkan kode 6 karakter" maxlength="6">
+            <button class="join-btn" onclick="joinGame()">Bergabung</button>
+        </div>
+
+        <div class="waiting-screen" id="waitingScreen">
+            <div class="waiting-title">Menunggu Pemain Lain</div>
+            <div class="waiting-message">Bagikan link ini kepada teman Anda untuk bergabung:</div>
+            <div class="share-link" id="waitingShareLink">
+                <span id="waitingLinkText">https://example.com/kata-girang</span>
+                <button class="copy-btn" onclick="copyWaitingLink()">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+            </div>
+            <div class="player-list-waiting" id="playerListWaiting">
+                <!-- Daftar pemain yang sudah bergabung akan ditampilkan di sini -->
+            </div>
+            <div class="timer" id="timer">60</div>
+            <button class="start-game-btn" id="startGameBtn" onclick="startGameFromWaiting()" style="display: none;">
+                Mulai Permainan
+            </button>
+            <div id="timeoutActions" style="display: none; margin-top: 20px;">
+                <div class="timeout-message">
+                    <p>Waktu habis! Tidak semua pemain berhasil bergabung.</p>
+                    <p>Apa yang ingin Anda lakukan?</p>
+                </div>
+                <div class="timeout-actions">
+                    <button class="btn btn-retry" onclick="generateNewCode()">
+                        <i class="fas fa-sync-alt"></i> Dapatkan Kode Baru
+                    </button>
+                    <button class="btn btn-confirm" onclick="startGameWithCurrentPlayers()">
+                        <i class="fas fa-play"></i> Mulai dengan Pemain Saat Ini
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-container" id="gameContainer">
+            <div class="game-info">
+                <div class="info-item">
+                    <div class="info-label">Level</div>
+                    <div class="info-value" id="currentLevel">1</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Soal</div>
+                    <div class="info-value" id="currentQuestion">1/10</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Giliran</div>
+                    <div class="info-value" id="currentPlayer">Pemain 1</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Skor</div>
+                    <div class="info-value" id="currentScore">0</div>
+                </div>
+            </div>
+
+            <div class="level-info" id="levelInfo">
+                <h3>Level 1: Penjumlahan dan Pengurangan</h3>
+                <p>Pilih minimal 2 kartu dan 1 operasi (+ atau -). Anda bisa memilih lebih banyak kartu dan operasi!</p>
+            </div>
+
+            <div class="result-target" id="resultTarget">Hasil: 0</div>
+
+            <div class="expression-display" id="expressionDisplay">
+                Pilih kartu dan operasi untuk membuat ekspresi matematika
+            </div>
+
+            <div class="game-area">
+                <div class="cards-container">
+                    <div class="cards-title">Pilih Kartu Angka</div>
+                    <div class="cards" id="cardsContainer">
+                        <!-- Kartu akan di-generate oleh JavaScript -->
+                    </div>
+                </div>
+
+                <div class="operations-container">
+                    <div class="operations-title">Pilih Operasi</div>
+                    <div class="operations" id="operationsContainer">
+                        <!-- Operasi akan di-generate oleh JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-submit" id="submitBtn" onclick="checkAnswer()">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+                <button class="btn btn-clear" onclick="clearSelection()">
+                    <i class="fas fa-eraser"></i> Hapus Pilihan
+                </button>
+                <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()">
+                    <i class="fas fa-forward"></i> Lewati
+                </button>
+                <button class="btn btn-restart" onclick="location.reload()">
+                    <i class="fas fa-redo"></i> Restart
+                </button>
+                <button class="btn btn-share" id="shareBtn" onclick="shareGame()" style="display: none;">
+                    <i class="fab fa-whatsapp"></i> Share
+                </button>
+            </div>
+
+            <div class="players-status">
+                <div class="players-title">Status Pemain</div>
+                <div class="players-list" id="playersList">
+                    <!-- Status pemain akan di-generate oleh JavaScript -->
+                </div>
+            </div>
+
+            <div class="share-container" id="shareContainer" style="display: none;">
+                <h3>Bagikan Link Permainan ke Teman</h3>
+                <p>Salin link di bawah ini dan bagikan ke teman via WhatsApp:</p>
+                <div class="share-link" id="shareLink">
+                    <span id="linkText">https://example.com/kata-girang</span>
+                    <button class="copy-btn" onclick="copyLink()">
+                        <i class="fas fa-copy"></i> Salin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk input nama pemain -->
+    <div id="playerNamesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Masukkan Nama Pemain</h2>
+                <span class="close" onclick="closePlayerNamesModal()">&times;</span>
+            </div>
+            <div class="player-inputs" id="playerInputs">
+                <!-- Input nama pemain akan di-generate oleh JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closePlayerNamesModal()">Batal</button>
+                <button class="btn btn-confirm" onclick="confirmPlayerNames()">Konfirmasi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk error kode tidak ditemukan -->
+    <div id="codeNotFoundModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Kode Tidak Ditemukan</h2>
+                <span class="close" onclick="closeCodeNotFoundModal()">&times;</span>
+            </div>
+            <div class="error-message">
+                <p>Kode permainan yang Anda masukkan tidak ditemukan atau sudah tidak berlaku.</p>
+                <p>Pastikan Anda memasukkan kode dengan benar atau buat permainan baru.</p>
+            </div>
+            <div class="error-actions">
+                <button class="btn btn-cancel" onclick="closeCodeNotFoundModal()">Kembali</button>
+                <button class="btn btn-confirm" onclick="createNewGame()">Buat Permainan Baru</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <div class="game-over" id="gameOver">
+        <div class="game-over-content">
+            <div class="game-over-title">PERMAINAN SELESAI</div>
+            <div class="game-over-message">Selamat kepada para Master Kata Girang!</div>
+            <div class="winners-list" id="winnersList">
+                <!-- Daftar pemenang akan di-generate oleh JavaScript -->
+            </div>
+            <button class="btn btn-restart" onclick="location.reload()">
+                <i class="fas fa-redo"></i> Main Lagi
+            </button>
+        </div>
+    </div>
+
+    <div class="audio-controls" id="audioControls" onclick="toggleAudio()">
+        <i class="fas fa-volume-up" id="audioIcon"></i>
+    </div>
+
+    <script>
+        // Audio context for sound effects
+        let audioContext;
+        let audioEnabled = true;
+
+        // Game state
+        let gameState = {
+            players: [],
+            currentPlayerIndex: 0,
+            currentQuestion: null,
+            questionNumber: 1,
+            selectedCards: [],
+            selectedOperations: [],
+            operations: [
+                { symbol: '+', name: 'ADD', levels: [1, 3] },
+                { symbol: '-', name: 'SUBTRACT', levels: [1, 3] },
+                { symbol: '×', name: 'MULTIPLY', levels: [2, 3] },
+                { symbol: '÷', name: 'DIVIDE', levels: [2, 3] }
+            ],
+            gameActive: false,
+            numPlayers: 1,
+            gameCode: null,
+            isHost: false,
+            playerNames: [],
+            questionStartTime: null,
+            answerTimes: [],
+            joinedPlayers: [],
+            selectedLevel: 1,
+            countdownExpired: false
+        };
+
+        // Initialize audio context
+        document.getElementById('startBtn').addEventListener('click', function() {
+            document.getElementById('startScreen').style.display = 'none';
+            initAudio();
+        });
+
+        function initAudio() {
+            try {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioContext();
+            } catch (e) {
+                console.error('Web Audio API is not supported in this browser');
+            }
+        }
+
+        function playSound(frequency, duration, type = 'sine') {
+            if (!audioEnabled || !audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = type;
+            oscillator.frequency.value = frequency;
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function playCardSound() {
+            playSound(523.25, 0.1); // C5
+        }
+
+        function playOperationSound() {
+            playSound(659.25, 0.1); // E5
+        }
+
+        function playCorrectSound() {
+            playSound(523.25, 0.1); // C5
+            setTimeout(() => playSound(659.25, 0.1), 100); // E5
+            setTimeout(() => playSound(783.99, 0.2), 200); // G5
+        }
+
+        function playWrongSound() {
+            playSound(349.23, 0.2); // F4
+            setTimeout(() => playSound(293.66, 0.3), 200); // D4
+        }
+
+        function playLevelUpSound() {
+            playSound(523.25, 0.1); // C5
+            setTimeout(() => playSound(659.25, 0.1), 100); // E5
+            setTimeout(() => playSound(783.99, 0.1), 200); // G5
+            setTimeout(() => playSound(1046.50, 0.3), 300); // C6
+        }
+
+        function playMasterSound() {
+            playSound(523.25, 0.1); // C5
+            setTimeout(() => playSound(659.25, 0.1), 100); // E5
+            setTimeout(() => playSound(783.99, 0.1), 200); // G5
+            setTimeout(() => playSound(1046.50, 0.1), 300); // C6
+            setTimeout(() => playSound(1318.51, 0.3), 400); // E6
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const icon = document.getElementById('audioIcon');
+            if (audioEnabled) {
+                icon.className = 'fas fa-volume-up';
+            } else {
+                icon.className = 'fas fa-volume-mute';
+            }
+        }
+
+        // Player class
+        class Player {
+            constructor(id, name, level = 1) {
+                this.id = id;
+                this.name = name;
+                this.cards = [];
+                this.score = 0;
+                this.level = level;
+                this.isMaster = false;
+                this.answerTime = null;
+                
+                // Initialize cards (1-9)
+                for (let i = 1; i <= 9; i++) {
+                    this.cards.push({
+                        value: i,
+                        selected: false,
+                        used: false
+                    });
+                }
+            }
+            
+            resetCards() {
+                this.cards.forEach(card => {
+                    card.selected = false;
+                    card.used = false;
+                });
+                this.answerTime = null;
+            }
+            
+            increaseScore() {
+                this.score++;
+                
+                if (this.score >= 10) {
+                    if (this.level === 1) {
+                        this.level = 2;
+                        this.score = 0;
+                        playLevelUpSound();
+                    } else if (this.level === 2) {
+                        this.level = 3;
+                        this.score = 0;
+                        playLevelUpSound();
+                    } else if (this.level === 3) {
+                        this.isMaster = true;
+                        playMasterSound();
+                    }
+                }
+            }
+        }
+
+        // Question class
+        class Question {
+            constructor(level) {
+                this.level = level;
+                this.result = 0;
+                this.generateQuestion();
+            }
+            
+            generateQuestion() {
+                if (this.level === 1) {
+                    // Level 1: Penjumlahan dan pengurangan
+                    const operation = Math.random() > 0.5 ? 'ADD' : 'SUBTRACT';
+                    let num1 = Math.floor(Math.random() * 9) + 1;
+                    let num2 = Math.floor(Math.random() * 9) + 1;
+                    
+                    if (operation === 'ADD') {
+                        this.result = num1 + num2;
+                    } else {
+                        // Pastikan hasil tidak negatif
+                        if (num1 < num2) {
+                            [num1, num2] = [num2, num1];
+                        }
+                        this.result = num1 - num2;
+                    }
+                } else if (this.level === 2) {
+                    // Level 2: Perkalian dan pembagian
+                    const operation = Math.random() > 0.5 ? 'MULTIPLY' : 'DIVIDE';
+                    
+                    if (operation === 'MULTIPLY') {
+                        const num1 = Math.floor(Math.random() * 9) + 1;
+                        const num2 = Math.floor(Math.random() * 9) + 1;
+                        this.result = num1 * num2;
+                    } else {
+                        // Untuk pembagian, pastikan hasilnya bulat
+                        const num2 = Math.floor(Math.random() * 9) + 1;
+                        this.result = Math.floor(Math.random() * 9) + 1;
+                        const num1 = num2 * this.result;
+                    }
+                } else {
+                    // Level 3: Operasi campuran
+                    // Kita buat 2 operasi dengan 3 angka
+                    const op1 = Math.random() > 0.5 ? 
+                        (Math.random() > 0.5 ? 'ADD' : 'SUBTRACT') : 
+                        (Math.random() > 0.5 ? 'MULTIPLY' : 'DIVIDE');
+                    const op2 = Math.random() > 0.5 ? 
+                        (Math.random() > 0.5 ? 'ADD' : 'SUBTRACT') : 
+                        (Math.random() > 0.5 ? 'MULTIPLY' : 'DIVIDE');
+                    
+                    let num1 = Math.floor(Math.random() * 9) + 1;
+                    let num2 = Math.floor(Math.random() * 9) + 1;
+                    let num3 = Math.floor(Math.random() * 9) + 1;
+                    
+                    // Hitung hasil dengan memperhatikan urutan operasi
+                    if (op1 === 'MULTIPLY' || op1 === 'DIVIDE' || op2 === 'MULTIPLY' || op2 === 'DIVIDE') {
+                        // Lakukan operasi perkalian/pembagian terlebih dahulu
+                        let temp;
+                        
+                        if (op1 === 'MULTIPLY') {
+                            temp = num1 * num2;
+                        } else if (op1 === 'DIVIDE') {
+                            // Pastikan hasilnya bulat
+                            if (num1 % num2 !== 0) {
+                                num1 = num2 * Math.floor(Math.random() * 9) + 1;
+                            }
+                            temp = Math.floor(num1 / num2);
+                        } else if (op1 === 'ADD') {
+                            temp = num1 + num2;
+                        } else { // SUBTRACT
+                            if (num1 < num2) {
+                                [num1, num2] = [num2, num1];
+                            }
+                            temp = num1 - num2;
+                        }
+                        
+                        // Lakukan operasi kedua
+                        if (op2 === 'MULTIPLY') {
+                            this.result = temp * num3;
+                        } else if (op2 === 'DIVIDE') {
+                            // Pastikan hasilnya bulat
+                            if (temp % num3 !== 0) {
+                                num3 = Math.floor(Math.random() * temp) + 1;
+                                while (temp % num3 !== 0) {
+                                    num3 = Math.floor(Math.random() * temp) + 1;
+                                }
+                            }
+                            this.result = Math.floor(temp / num3);
+                        } else if (op2 === 'ADD') {
+                            this.result = temp + num3;
+                        } else { // SUBTRACT
+                            if (temp < num3) {
+                                [temp, num3] = [num3, temp];
+                            }
+                            this.result = temp - num3;
+                        }
+                    } else {
+                        // Jika hanya ada penjumlahan dan pengurangan, urutan tidak masalah
+                        let temp;
+                        
+                        if (op1 === 'ADD') {
+                            temp = num1 + num2;
+                        } else { // SUBTRACT
+                            if (num1 < num2) {
+                                [num1, num2] = [num2, num1];
+                            }
+                            temp = num1 - num2;
+                        }
+                        
+                        if (op2 === 'ADD') {
+                            this.result = temp + num3;
+                        } else { // SUBTRACT
+                            if (temp < num3) {
+                                [temp, num3] = [num3, temp];
+                            }
+                            this.result = temp - num3;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Select level
+        function selectLevel(level) {
+            gameState.selectedLevel = level;
+            
+            // Hide level selection and show player selection
+            document.getElementById('levelSelect').style.display = 'none';
+            document.getElementById('playerSelect').style.display = 'block';
+        }
+
+        // Show player names modal
+        function showPlayerNamesModal(numPlayers) {
+            gameState.numPlayers = numPlayers;
+            
+            const modal = document.getElementById('playerNamesModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const playerInputs = document.getElementById('playerInputs');
+            
+            // Set modal title based on number of players
+            if (numPlayers === 1) {
+                modalTitle.textContent = 'Masukkan Nama Anda';
+            } else {
+                modalTitle.textContent = 'Masukkan Nama Host';
+            }
+            
+            // Clear previous inputs
+            playerInputs.innerHTML = '';
+            
+            // Create input field for host name
+            const inputDiv = document.createElement('div');
+            inputDiv.className = 'player-input';
+            
+            const label = document.createElement('label');
+            if (numPlayers === 1) {
+                label.textContent = 'Nama Anda:';
+            } else {
+                label.textContent = 'Nama Host:';
+            }
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'hostName';
+            input.placeholder = 'Masukkan nama';
+            input.value = numPlayers === 1 ? 'Pemain' : 'Host';
+            
+            inputDiv.appendChild(label);
+            inputDiv.appendChild(input);
+            playerInputs.appendChild(inputDiv);
+            
+            // Show modal
+            modal.style.display = 'block';
+        }
+
+        // Close player names modal
+        function closePlayerNamesModal() {
+            document.getElementById('playerNamesModal').style.display = 'none';
+        }
+
+        // Close code not found modal
+        function closeCodeNotFoundModal() {
+            document.getElementById('codeNotFoundModal').style.display = 'none';
+        }
+
+        // Create new game from code not found modal
+        function createNewGame() {
+            closeCodeNotFoundModal();
+            document.getElementById('joinScreen').style.display = 'none';
+            document.getElementById('menuContainer').style.display = 'flex';
+        }
+
+        // Confirm player names
+        function confirmPlayerNames() {
+            // Get host name
+            const hostName = document.getElementById('hostName').value.trim() || 'Host';
+            
+            // Close modal
+            closePlayerNamesModal();
+            
+            // If single player, start game immediately
+            if (gameState.numPlayers === 1) {
+                gameState.playerNames = [hostName];
+                startGame(gameState.numPlayers, gameState.playerNames);
+            } else {
+                // For multiplayer, show waiting screen
+                gameState.playerNames = [hostName];
+                showWaitingScreen();
+            }
+        }
+
+        // Show waiting screen
+        function showWaitingScreen() {
+            // Generate game code
+            gameState.gameCode = generateGameCode();
+            gameState.isHost = true;
+            gameState.countdownExpired = false;
+            
+            // Store game data in localStorage
+            const gameData = {
+                code: gameState.gameCode,
+                hostName: gameState.playerNames[0],
+                players: [{
+                    id: 0,
+                    name: gameState.playerNames[0],
+                    isHost: true
+                }],
+                maxPlayers: gameState.numPlayers,
+                status: 'waiting',
+                level: gameState.selectedLevel,
+                createdAt: Date.now()
+            };
+            
+            // Use a more reliable storage method
+            localStorage.setItem(`kataGirang_${gameState.gameCode}`, JSON.stringify(gameData));
+            
+            // Also store in sessionStorage as backup
+            sessionStorage.setItem(`kataGirang_${gameState.gameCode}`, JSON.stringify(gameData));
+            
+            // Set waiting screen link
+            const baseUrl = window.location.origin + window.location.pathname;
+            const waitingLink = `${baseUrl}?join=${gameState.gameCode}`;
+            document.getElementById('waitingLinkText').textContent = waitingLink;
+            
+            // Update player list
+            updatePlayerListWaiting();
+            
+            // Show waiting screen
+            document.getElementById('menuContainer').style.display = 'none';
+            document.getElementById('waitingScreen').style.display = 'flex';
+            
+            // Reset timeout actions
+            document.getElementById('timeoutActions').style.display = 'none';
+            
+            // Start countdown timer (60 seconds)
+            startCountdown();
+            
+            // Start checking for new players
+            checkForNewPlayers();
+        }
+
+        // Generate random game code
+        function generateGameCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Update player list in waiting screen
+        function updatePlayerListWaiting() {
+            const playerList = document.getElementById('playerListWaiting');
+            playerList.innerHTML = '';
+            
+            // Try to get game data from localStorage first, then sessionStorage
+            let gameData = JSON.parse(localStorage.getItem(`kataGirang_${gameState.gameCode}`) || '{}');
+            if (!gameData || !gameData.players) {
+                gameData = JSON.parse(sessionStorage.getItem(`kataGirang_${gameState.gameCode}`) || '{}');
+            }
+            
+            // Add all players
+            if (gameData.players) {
+                gameData.players.forEach(player => {
+                    const playerItem = document.createElement('div');
+                    playerItem.className = 'player-item-waiting';
+                    playerItem.innerHTML = `
+                        <div class="player-avatar">${player.name.charAt(0).toUpperCase()}</div>
+                        <div class="player-name-waiting">${player.name}</div>
+                        <div class="player-status-waiting">${player.isHost ? 'Host' : 'Bergabung'}</div>
+                    `;
+                    playerList.appendChild(playerItem);
+                });
+            }
+            
+            // Check if all players have joined
+            if (gameData.players && gameData.players.length >= gameData.maxPlayers) {
+                document.getElementById('timer').textContent = 'Semua pemain telah bergabung!';
+                document.getElementById('startGameBtn').style.display = 'block';
+            }
+        }
+
+        // Start countdown timer (60 seconds)
+        function startCountdown() {
+            let seconds = 60;
+            const timerElement = document.getElementById('timer');
+            
+            const countdownInterval = setInterval(() => {
+                // Check if all players have joined
+                let gameData = JSON.parse(localStorage.getItem(`kataGirang_${gameState.gameCode}`) || '{}');
+                if (!gameData || !gameData.players) {
+                    gameData = JSON.parse(sessionStorage.getItem(`kataGirang_${gameState.gameCode}`) || '{}');
+                }
+                
+                if (gameData.players && gameData.players.length >= gameData.maxPlayers) {
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                
+                timerElement.textContent = seconds;
+                seconds--;
+                
+                if (seconds < 0) {
+                    clearInterval(countdownInterval);
+                    // Show timeout actions
+                    gameState.countdownExpired = true;
+                    document.getElementById('timer').textContent = 'Waktu Habis!';
+                    document.getElementById('timeoutActions').style.display = 'block';
+                    
+                    // Show start button if at least 2 players have joined
+                    if (gameData.players && gameData.players.length >= 2) {
+                        document.getElementById('startGameBtn').style.display = 'block';
+                    }
+                }
+            }, 1000);
+        }
+
+        // Check for new players
+        function checkForNewPlayers() {
+            const checkInterval = setInterval(() => {
+                updatePlayerListWaiting();
+                
+                // Stop checking if game has started
+                if (gameState.gameActive) {
+                    clearInterval(checkInterval);
+                }
+            }, 1000);
+        }
+
+        // Generate new code
+        function generateNewCode() {
+            // Generate new game code
+            gameState.gameCode = generateGameCode();
+            gameState.countdownExpired = false;
+            
+            // Update game data with new code
+            let gameData = JSON.parse(localStorage.getItem(`kataGirang_${gameState.gameCode}`) || '{}');
+            if (!gameData || !gameData.players) {
+                gameData = JSON.parse(sessionStorage.getItem(`kataGirang_${gameState.gameCode}`) || '{}');
+            }
+            
+            gameData.code = gameState.gameCode;
+            
+            // Update both localStorage and sessionStorage
+            localStorage.setItem(`kataGirang_${gameState.gameCode}`, JSON.stringify(gameData));
+            sessionStorage.setItem(`kataGirang_${gameState.gameCode}`, JSON.stringify(gameData));
+            
+            // Update link
+            const baseUrl = window.location.origin + window.location.pathname;
+            const waitingLink = `${baseUrl}?join=${gameState.gameCode}`;
+            document.getElementById('waitingLinkText').textContent = waitingLink;
+            
+            // Reset timer and hide timeout actions
+            document.getElementById('timer').textContent = '60';
+            document.getElementById('timeoutActions').style.display = 'none';
+            document.getElementById('startGameBtn').style.display = 'none';
+            
+            // Restart countdown
+            startCountdown();
+            
+            showMessage('Kode baru telah dibuat!');
+        }
+
+        // Start game with current players
+        function startGameWithCurrentPlayers() {
+            // Get current players
+            let gameData = JSON.parse(localStorage.getItem(`kataGirang_${gameState.gameCode}`) || '{}');
+            if (!gameData || !gameData.players) {
+                gameData = JSON.parse(sessionStorage.getItem(`kataGirang_${gameState.gameCode}`) || '{}');
+            }
+            
+            if (gameData.players && gameData.players.length >= 2) {
+                // Update game data
+                gameData.status = 'playing';
+                localStorage.setItem(`kataGirang_${gameState.gameCode}`, JSON.stringify(gameData));
+                sessionStorage.setItem(`kataGirang_${gameState.gameCode}`, JSON.stringify(gameData));
+                
+                // Start game
+                document.getElementById('waitingScreen').style.display = 'none';
+                startGame(gameData.players.length, gameData.players.map(p => p.name));
+            } else {
+                showMessage('Minimal 2 pemain diperlukan untuk memulai permainan!');
+            }
+        }
+
+        // Join game
+        function joinGame() {
+            const joinCode = document.getElementById('joinCodeInput').value.toUpperCase();
+            
+            if (!joinCode || joinCode.length !== 6) {
+                showMessage('Kode permainan harus 6 karakter!');
+                return;
+            }
+            
+            // Try to get game data from localStorage first, then sessionStorage
+            let gameData = JSON.parse(localStorage.getItem(`kataGirang_${joinCode}`));
+            if (!gameData) {
+                gameData = JSON.parse(sessionStorage.getItem(`kataGirang_${joinCode}`));
+            }
+            
+            if (!gameData) {
+                // Show code not found modal
+                document.getElementById('codeNotFoundModal').style.display = 'block';
+                return;
+            }
+            
+            if (gameData.status !== 'waiting') {
+                showMessage('Permainan sudah dimulai atau telah berakhir!');
+                return;
+            }
+            
+            if (gameData.players.length >= gameData.maxPlayers) {
+                showMessage('Permainan sudah penuh!');
+                return;
+            }
+            
+            // Show player name input modal
+            showJoinNameModal(joinCode);
+        }
+
+        // Show join name modal
+        function showJoinNameModal(gameCode) {
+            const modal = document.getElementById('playerNamesModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const playerInputs = document.getElementById('playerInputs');
+            
+            // Change modal title
+            modalTitle.textContent = 'Masukkan Nama Anda';
+            
+            // Clear previous inputs
+            playerInputs.innerHTML = '';
+            
+            // Create input field for player name
+            const inputDiv = document.createElement('div');
+            inputDiv.className = 'player-input';
+            
+            const label = document.createElement('label');
+            label.textContent = 'Nama Anda:';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'joinPlayerName';
+            input.placeholder = 'Masukkan nama Anda';
+            input.value = 'Pemain';
+            
+            inputDiv.appendChild(label);
+            inputDiv.appendChild(input);
+            playerInputs.appendChild(inputDiv);
+            
+            // Change confirm button action
+            const confirmBtn = document.querySelector('.btn-confirm');
+            confirmBtn.onclick = function() {
+                confirmJoinPlayer(gameCode);
+            };
+            
+            // Show modal
+            modal.style.display = 'block';
+        }
+
+        // Confirm join player
+        function confirmJoinPlayer(gameCode) {
+            const playerName = document.getElementById('joinPlayerName').value.trim() || 'Pemain';
+            
+            // Try to get game data from localStorage first, then sessionStorage
+            let gameData = JSON.parse(localStorage.getItem(`kataGirang_${gameCode}`));
+            if (!gameData) {
+                gameData = JSON.parse(sessionStorage.getItem(`kataGirang_${gameCode}`));
+            }
+            
+            // Add new player
+            const newPlayer = {
+                id: gameData.players.length,
+                name: playerName,
+                isHost: false
+            };
+            
+            gameData.players.push(newPlayer);
+            
+            // Update both localStorage and sessionStorage
+            localStorage.setItem(`kataGirang_${gameCode}`, JSON.stringify(gameData));
+            sessionStorage.setItem(`kataGirang_${gameCode}`, JSON.stringify(gameData));
+            
+            // Close modal
+            closePlayerNamesModal();
+            
+            // Show notification
+            showNotification(`Berhasil bergabung ke permainan!`);
+            
+            // Go to waiting screen
+            gameState.gameCode = gameCode;
+            gameState.isHost = false;
+            gameState.selectedLevel = gameData.level;
+            
+            document.getElementById('menuContainer').style.display = 'none';
+            document.getElementById('joinScreen').style.display = 'none';
+            document.getElementById('waitingScreen').style.display = 'flex';
+            
+            // Set waiting screen link
+            const baseUrl = window.location.origin + window.location.pathname;
+            const waitingLink = `${baseUrl}?join=${gameCode}`;
+            document.getElementById('waitingLinkText').textContent = waitingLink;
+            
+            // Update player list
+            updatePlayerListWaiting();
+            
+            // Start checking for new players
+            checkForNewPlayers();
+        }
+
+        // Start game from waiting screen
+        function startGameFromWaiting() {
+            // Try to get game data from localStorage first, then sessionStorage
+            let gameData = JSON.parse(localStorage.getItem(`kataGirang_${gameState.gameCode}`));
+            if (!gameData) {
+                gameData = JSON.parse(sessionStorage.getItem(`kataGirang_${gameState.gameCode}`));
+            }
+            
+            // Update game status
+            gameData.status = 'playing';
+            localStorage.setItem(`kataGirang_${gameState.gameCode}`, JSON.stringify(gameData));
+            sessionStorage.setItem(`kataGirang_${gameState.gameCode}`, JSON.stringify(gameData));
+            
+            // Start game
+            document.getElementById('waitingScreen').style.display = 'none';
+            startGame(gameData.players.length, gameData.players.map(p => p.name));
+        }
+
+        // Start game
+        function startGame(numPlayers, playerNames) {
+            // Initialize players
+            gameState.players = [];
+            for (let i = 0; i < numPlayers; i++) {
+                gameState.players.push(new Player(i, playerNames[i], gameState.selectedLevel));
+            }
+            
+            // Reset game state
+            gameState.currentPlayerIndex = 0;
+            gameState.questionNumber = 1;
+            gameState.selectedCards = [];
+            gameState.selectedOperations = [];
+            gameState.gameActive = true;
+            gameState.answerTimes = [];
+            
+            // Show game container
+            document.getElementById('menuContainer').style.display = 'none';
+            document.getElementById('waitingScreen').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
+            
+            // Show share button if multiplayer
+            if (numPlayers > 1) {
+                document.getElementById('shareBtn').style.display = 'inline-flex';
+                document.getElementById('shareContainer').style.display = 'block';
+                
+                // Set share link
+                const baseUrl = window.location.origin + window.location.pathname;
+                const shareLink = `${baseUrl}?join=${gameState.gameCode}`;
+                document.getElementById('linkText').textContent = shareLink;
+            }
+            
+            // Initialize game
+            renderPlayersStatus();
+            renderOperations();
+            nextQuestion();
+        }
+
+        // Render players status
+        function renderPlayersStatus() {
+            const playersList = document.getElementById('playersList');
+            playersList.innerHTML = '';
+            
+            gameState.players.forEach(player => {
+                const playerStatus = document.createElement('div');
+                playerStatus.className = 'player-status';
+                if (player.id === gameState.currentPlayerIndex) {
+                    playerStatus.classList.add('active');
+                }
+                
+                playerStatus.innerHTML = `
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-info">Level ${player.level}, Skor ${player.score}</div>
+                    ${player.isMaster ? '<div class="master-badge"><i class="fas fa-trophy"></i> Master Kata Girang</div>' : ''}
+                `;
+                
+                playersList.appendChild(playerStatus);
+            });
+        }
+
+        // Render operations
+        function renderOperations() {
+            const operationsContainer = document.getElementById('operationsContainer');
+            operationsContainer.innerHTML = '';
+            
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            
+            gameState.operations.forEach(op => {
+                const operation = document.createElement('div');
+                operation.className = 'operation';
+                operation.textContent = op.symbol;
+                operation.dataset.name = op.name;
+                
+                // Check if operation is allowed for current level
+                if (!op.levels.includes(currentPlayer.level)) {
+                    operation.classList.add('disabled');
+                } else {
+                    operation.addEventListener('click', () => toggleOperation(op.name));
+                }
+                
+                operationsContainer.appendChild(operation);
+            });
+        }
+
+        // Render cards
+        function renderCards() {
+            const cardsContainer = document.getElementById('cardsContainer');
+            cardsContainer.innerHTML = '';
+            
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            
+            currentPlayer.cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.textContent = card.value;
+                cardElement.dataset.index = index;
+                
+                if (card.used) {
+                    cardElement.classList.add('used');
+                } else {
+                    cardElement.addEventListener('click', () => toggleCard(index));
+                }
+                
+                if (card.selected) {
+                    cardElement.classList.add('selected');
+                }
+                
+                cardsContainer.appendChild(cardElement);
+            });
+        }
+
+        // Toggle card selection
+        function toggleCard(index) {
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            const card = currentPlayer.cards[index];
+            
+            if (card.used) return;
+            
+            card.selected = !card.selected;
+            playCardSound();
+            
+            if (card.selected) {
+                gameState.selectedCards.push(index);
+            } else {
+                const idx = gameState.selectedCards.indexOf(index);
+                if (idx > -1) {
+                    gameState.selectedCards.splice(idx, 1);
+                }
+            }
+            
+            renderCards();
+            updateExpressionDisplay();
+        }
+
+        // Toggle operation selection
+        function toggleOperation(name) {
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            
+            // Check if operation is allowed for current level
+            const operation = gameState.operations.find(op => op.name === name);
+            if (!operation.levels.includes(currentPlayer.level)) return;
+            
+            playOperationSound();
+            
+            const index = gameState.selectedOperations.indexOf(name);
+            
+            if (index > -1) {
+                gameState.selectedOperations.splice(index, 1);
+            } else {
+                gameState.selectedOperations.push(name);
+            }
+            
+            // Update UI
+            document.querySelectorAll('.operation').forEach(op => {
+                if (op.dataset.name === name) {
+                    op.classList.toggle('selected');
+                }
+            });
+            
+            updateExpressionDisplay();
+        }
+
+        // Update expression display
+        function updateExpressionDisplay() {
+            const expressionDisplay = document.getElementById('expressionDisplay');
+            
+            if (gameState.selectedCards.length === 0 || gameState.selectedOperations.length === 0) {
+                expressionDisplay.textContent = 'Pilih kartu dan operasi untuk membuat ekspresi matematika';
+                return;
+            }
+            
+            // Sort cards by their original position
+            const sortedCards = [...gameState.selectedCards].sort((a, b) => a - b);
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            const cardValues = sortedCards.map(index => currentPlayer.cards[index].value);
+            
+            // Build expression string
+            let expression = '';
+            for (let i = 0; i < cardValues.length; i++) {
+                expression += cardValues[i];
+                
+                if (i < gameState.selectedOperations.length) {
+                    const op = gameState.operations.find(o => o.name === gameState.selectedOperations[i]);
+                    expression += ` ${op.symbol} `;
+                }
+            }
+            
+            expressionDisplay.textContent = expression;
+        }
+
+        // Clear selection
+        function clearSelection() {
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            
+            // Clear card selections
+            gameState.selectedCards.forEach(index => {
+                currentPlayer.cards[index].selected = false;
+            });
+            
+            // Clear operation selections
+            document.querySelectorAll('.operation.selected').forEach(op => {
+                op.classList.remove('selected');
+            });
+            
+            // Reset state
+            gameState.selectedCards = [];
+            gameState.selectedOperations = [];
+            
+            // Update UI
+            renderCards();
+            updateExpressionDisplay();
+        }
+
+        // Next question
+        function nextQuestion() {
+            // Reset selections
+            clearSelection();
+            
+            // Reset cards for current player
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            currentPlayer.resetCards();
+            
+            // Generate new question
+            gameState.currentQuestion = new Question(currentPlayer.level);
+            
+            // Record question start time
+            gameState.questionStartTime = Date.now();
+            
+            // Update UI
+            updateGameInfo();
+            updateLevelInfo();
+            renderCards();
+            renderOperations();
+            renderPlayersStatus();
+            updateExpressionDisplay();
+            
+            // Check if we need to move to next player
+            if (gameState.questionNumber > 10) {
+                nextPlayer();
+            }
+        }
+
+        // Update game info
+        function updateGameInfo() {
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            
+            document.getElementById('currentLevel').textContent = currentPlayer.level;
+            document.getElementById('currentQuestion').textContent = `${gameState.questionNumber}/10`;
+            document.getElementById('currentPlayer').textContent = currentPlayer.name;
+            document.getElementById('currentScore').textContent = currentPlayer.score;
+            document.getElementById('resultTarget').textContent = `Hasil: ${gameState.currentQuestion.result}`;
+        }
+
+        // Update level info
+        function updateLevelInfo() {
+            const levelInfo = document.getElementById('levelInfo');
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            
+            if (currentPlayer.level === 1) {
+                levelInfo.innerHTML = `
+                    <h3>Level 1: Penjumlahan dan Pengurangan</h3>
+                    <p>Pilih minimal 2 kartu dan 1 operasi (+ atau -). Anda bisa memilih lebih banyak kartu dan operasi!</p>
+                `;
+            } else if (currentPlayer.level === 2) {
+                levelInfo.innerHTML = `
+                    <h3>Level 2: Perkalian dan Pembagian</h3>
+                    <p>Pilih minimal 2 kartu dan 1 operasi (× atau ÷). Anda bisa memilih lebih banyak kartu dan operasi!</p>
+                `;
+            } else {
+                levelInfo.innerHTML = `
+                    <h3>Level 3: Operasi Campuran</h3>
+                    <p>Pilih minimal 3 kartu dan 2 operasi (+, -, ×, ÷). Anda bisa memilih lebih banyak kartu dan operasi!</p>
+                `;
+            }
+        }
+
+        // Next player
+        function nextPlayer() {
+            gameState.questionNumber = 1;
+            gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+            
+            // Check if all players are masters
+            const allMasters = gameState.players.every(player => player.isMaster);
+            if (allMasters) {
+                endGame();
+                return;
+            }
+            
+            nextQuestion();
+        }
+
+        // Evaluate expression
+        function evaluateExpression(values, operations) {
+            // Create a copy of values and operations
+            let evalValues = [...values];
+            let evalOps = [...operations];
+            
+            // First pass: handle multiplication and division
+            for (let i = 0; i < evalOps.length; i++) {
+                if (evalOps[i] === 'MULTIPLY' || evalOps[i] === 'DIVIDE') {
+                    const left = evalValues[i];
+                    const right = evalValues[i + 1];
+                    let result;
+                    
+                    if (evalOps[i] === 'MULTIPLY') {
+                        result = left * right;
+                    } else { // DIVIDE
+                        if (right === 0 || left % right !== 0) {
+                            return null; // Invalid division
+                        }
+                        result = Math.floor(left / right);
+                    }
+                    
+                    // Replace the two values with the result
+                    evalValues.splice(i, 2, result);
+                    evalOps.splice(i, 1);
+                    i--; // Adjust index after removal
+                }
+            }
+            
+            // Second pass: handle addition and subtraction
+            for (let i = 0; i < evalOps.length; i++) {
+                const left = evalValues[i];
+                const right = evalValues[i + 1];
+                let result;
+                
+                if (evalOps[i] === 'ADD') {
+                    result = left + right;
+                } else { // SUBTRACT
+                    result = Math.abs(left - right);
+                }
+                
+                // Replace the two values with the result
+                evalValues.splice(i, 2, result);
+                evalOps.splice(i, 1);
+                i--; // Adjust index after removal
+            }
+            
+            return evalValues[0];
+        }
+
+        // Check answer
+        function checkAnswer() {
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+            
+            // Validate selections
+            if (gameState.selectedCards.length === 0 || gameState.selectedOperations.length === 0) {
+                showMessage('Pilih kartu dan operasi terlebih dahulu!');
+                playWrongSound();
+                return;
+            }
+            
+            // Get selected card values
+            const sortedCards = [...gameState.selectedCards].sort((a, b) => a - b);
+            const cardValues = sortedCards.map(index => currentPlayer.cards[index].value);
+            
+            // Validate based on level
+            let isValid = true;
+            
+            if (currentPlayer.level === 1) {
+                // Level 1: Minimal 2 kartu, operasi hanya + dan -
+                if (cardValues.length < 2) {
+                    showMessage('Level 1 membutuhkan minimal 2 kartu!');
+                    playWrongSound();
+                    return;
+                }
+                
+                // Check if operations are valid for level 1
+                for (const op of gameState.selectedOperations) {
+                    if (op !== 'ADD' && op !== 'SUBTRACT') {
+                        showMessage('Level 1 hanya boleh menggunakan operasi + dan -!');
+                        playWrongSound();
+                        return;
+                    }
+                }
+                
+                // Check if number of operations is correct
+                if (gameState.selectedOperations.length !== cardValues.length - 1) {
+                    showMessage(`Jumlah operasi harus sama dengan jumlah kartu dikurangi 1!`);
+                    playWrongSound();
+                    return;
+                }
+            } else if (currentPlayer.level === 2) {
+                // Level 2: Minimal 2 kartu, operasi hanya × dan ÷
+                if (cardValues.length < 2) {
+                    showMessage('Level 2 membutuhkan minimal 2 kartu!');
+                    playWrongSound();
+                    return;
+                }
+                
+                // Check if operations are valid for level 2
+                for (const op of gameState.selectedOperations) {
+                    if (op !== 'MULTIPLY' && op !== 'DIVIDE') {
+                        showMessage('Level 2 hanya boleh menggunakan operasi × dan ÷!');
+                        playWrongSound();
+                        return;
+                    }
+                }
+                
+                // Check if number of operations is correct
+                if (gameState.selectedOperations.length !== cardValues.length - 1) {
+                    showMessage(`Jumlah operasi harus sama dengan jumlah kartu dikurangi 1!`);
+                    playWrongSound();
+                    return;
+                }
+            } else {
+                // Level 3: Minimal 3 kartu, operasi campuran
+                if (cardValues.length < 3) {
+                    showMessage('Level 3 membutuhkan minimal 3 kartu!');
+                    playWrongSound();
+                    return;
+                }
+                
+                // Check if number of operations is correct
+                if (gameState.selectedOperations.length !== cardValues.length - 1) {
+                    showMessage(`Jumlah operasi harus sama dengan jumlah kartu dikurangi 1!`);
+                    playWrongSound();
+                    return;
+                }
+            }
+            
+            // Evaluate the expression
+            const result = evaluateExpression(cardValues, gameState.selectedOperations);
+            
+            if (result === null) {
+                showMessage('Ekspresi matematika tidak valid!');
+                playWrongSound();
+                return;
+            }
+            
+            // Record answer time
+            const answerTime = Date.now() - gameState.questionStartTime;
+            currentPlayer.answerTime = answerTime;
+            
+            // Check result
+            if (result === gameState.currentQuestion.result) {
+                // In multiplayer, check if this is the fastest answer
+                if (gameState.numPlayers > 1) {
+                    // Check if anyone else has answered correctly
+                    const otherAnswers = gameState.answerTimes.filter(at => 
+                        at.questionNumber === gameState.questionNumber && 
+                        at.playerId !== currentPlayer.id && 
+                        at.correct
+                    );
+                    
+                    if (otherAnswers.length === 0 || answerTime < Math.min(...otherAnswers.map(a => a.time))) {
+                        // This is the first correct answer or the fastest
+                        showMessage(`Benar! ${currentPlayer.name} tercepat!`);
+                        currentPlayer.increaseScore();
+                        
+                        // Mark cards as used
+                        gameState.selectedCards.forEach(index => {
+                            currentPlayer.cards[index].used = true;
+                        });
+                        
+                        // Move to next question after delay
+                        setTimeout(() => {
+                            gameState.questionNumber++;
+                            nextQuestion();
+                        }, 1500);
+                    } else {
+                        showMessage(`Benar, tapi bukan yang tercepat!`);
+                    }
+                } else {
+                    // Single player mode
+                    showMessage('Benar!');
+                    currentPlayer.increaseScore();
+                    
+                    // Mark cards as used
+                    gameState.selectedCards.forEach(index => {
+                        currentPlayer.cards[index].used = true;
+                    });
+                    
+                    // Move to next question after delay
+                    setTimeout(() => {
+                        gameState.questionNumber++;
+                        nextQuestion();
+                    }, 1500);
+                }
+                
+                playCorrectSound();
+                createParticles(event.clientX, event.clientY);
+                
+                // Record this answer
+                gameState.answerTimes.push({
+                    playerId: currentPlayer.id,
+                    questionNumber: gameState.questionNumber,
+                    time: answerTime,
+                    correct: true
+                });
+            } else {
+                showMessage(`Salah! Hasilnya harus ${gameState.currentQuestion.result}`);
+                playWrongSound();
+                
+                // Record this answer
+                gameState.answerTimes.push({
+                    playerId: currentPlayer.id,
+                    questionNumber: gameState.questionNumber,
+                    time: answerTime,
+                    correct: false
+                });
+            }
+        }
+
+        // Create particles effect
+        function createParticles(x, y) {
+            const particlesContainer = document.getElementById('particles');
+            const colors = ['#FFD700', '#FF6347', '#00BFFF', '#32CD32', '#FF69B4'];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 10 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.backgroundColor = color;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                
+                const tx = (Math.random() - 0.5) * 100;
+                const ty = (Math.random() - 0.5) * 100;
+                
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                
+                particlesContainer.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
+
+        // Show message
+        function showMessage(text) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = text;
+            messageElement.style.display = 'block';
+            
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 2000);
+        }
+
+        // Show notification
+        function showNotification(text) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = text;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // End game
+        function endGame() {
+            gameState.gameActive = false;
+            
+            // Get all masters
+            const masters = gameState.players.filter(player => player.isMaster);
+            
+            // Show game over screen
+            const gameOverElement = document.getElementById('gameOver');
+            const winnersList = document.getElementById('winnersList');
+            
+            winnersList.innerHTML = '';
+            
+            masters.forEach(master => {
+                const winnerItem = document.createElement('div');
+                winnerItem.className = 'winner-item';
+                winnerItem.innerHTML = `<i class="fas fa-trophy"></i> ${master.name} - Master Kata Girang`;
+                winnersList.appendChild(winnerItem);
+            });
+            
+            gameOverElement.style.display = 'flex';
+        }
+
+        // Share game
+        function shareGame() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareLink = `${baseUrl}?join=${gameState.gameCode}`;
+            document.getElementById('linkText').textContent = shareLink;
+            
+            // For mobile devices, try to open WhatsApp directly
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`Ayo main Kata Girang bersama! Kode: ${gameState.gameCode}\n${shareLink}`)}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        }
+
+        // Copy link
+        function copyLink() {
+            const linkText = document.getElementById('linkText').textContent;
+            navigator.clipboard.writeText(linkText).then(() => {
+                showMessage('Link telah disalin!');
+            }).catch(err => {
+                console.error('Gagal menyalin link: ', err);
+                showMessage('Gagal menyalin link!');
+            });
+        }
+
+        // Copy waiting link
+        function copyWaitingLink() {
+            const linkText = document.getElementById('waitingLinkText').textContent;
+            navigator.clipboard.writeText(linkText).then(() => {
+                showMessage('Link telah disalin!');
+            }).catch(err => {
+                console.error('Gagal menyalin link: ', err);
+                showMessage('Gagal menyalin link!');
+            });
+        }
+
+        // Check for URL parameters
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const joinParam = urlParams.get('join');
+            
+            if (joinParam) {
+                // User is joining a game
+                setTimeout(() => {
+                    document.getElementById('startScreen').style.display = 'none';
+                    initAudio();
+                    
+                    // Show join screen
+                    document.getElementById('menuContainer').style.display = 'none';
+                    document.getElementById('joinScreen').style.display = 'flex';
+                    
+                    // Pre-fill the join code
+                    document.getElementById('joinCodeInput').value = joinParam.toUpperCase();
+                }, 1000);
+            }
+        });
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const playerModal = document.getElementById('playerNamesModal');
+            const codeModal = document.getElementById('codeNotFoundModal');
+            
+            if (event.target === playerModal) {
+                closePlayerNamesModal();
+            }
+            
+            if (event.target === codeModal) {
+                closeCodeNotFoundModal();
+            }
+        }
+    </script>
+</body>
+</html>
